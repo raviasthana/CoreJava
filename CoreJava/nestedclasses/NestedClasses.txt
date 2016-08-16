@@ -15,15 +15,16 @@ Static member class is a way of 'grouping' classes together. Java of-course does
 top-level static classes; only nested static classes.
 
 Static member class acts like an entirely separate class, which just happens to be accessed via the
-outer/enclosing class. You DON'T need an instance of the outer class to created an object of static 
+outer/enclosing class. You DON'T need an instance of the outer class to create an object of static 
 member class. Static member class can access static data members of enclosing class, or call static
 methods, for that matter.
 
 Member class
 ------------
-Member class is a also defined as a member of a class. Unlike the static variety, the member class
-is "instance specific" (requires object of enclosing class to create its instance). Member class
-has access to any and all methods and members, even the parents(enclosing class) 'this' reference.
+Member class is a also defined as a member of a class (enclosing class). Unlike the static variety, 
+the member class is "instance specific" (requires object of enclosing class to create its instance). 
+Member class has access to any and all methods and members, even the parents(enclosing class) 'this' 
+reference.
 
 Local class
 -----------
@@ -44,7 +45,7 @@ b) An Organisational Advantage
 c) A call-back Advantage
 
 The object-oriented advantage
------------------------------
+=============================
 An important(may be most important) feature of the inner class is that it allows you to turn things into 
 objects that you normally wouldn't turn into objects. This allows code to be even more object-oriented
 than it would be without inner classes.
@@ -63,7 +64,7 @@ Through the use of an inner class, we have successfully decoupled the search alg
 Now, to change the search algorithm, we can simply swap in a new class. 
 This opens up our code to many of the advantages provided by object-oriented techniques.
 
-The organizational advantage
+The Organizational Advantage
 ----------------------------
 Object-oriented design isn't everyone's thing, but luckily, inner classes provide more. 
 From an organizational point of view, inner classes allow us to further organize our package structure 
@@ -92,7 +93,7 @@ package 1
 Used carefully, inner classes can provide a structural hierarchy that more naturally fits your classes.
 
 The callback advantage
------------------------
+----------------------
 Inner member classes and anonymous classes both provide a convenient method for defining callbacks. 
 The most obvious example relates to GUI code. However, the application of the callback can extend to 
 many domains.
@@ -192,6 +193,11 @@ Disadvantages?
 As with anything else, you have to take the good with the bad. Inner classes have their disadvantages. 
 From a maintenance point of view, inexperienced Java developers may find the inner class difficult to 
 understand. The use of inner classes will also increase the total number of classes in your code. 
+
+Does an inner class violate encapsulation?
+------------------------------------------
+No, an inner class does not violate encapsulation because of the fact that an inner class is authored by 
+the same person who created the outer class – so having an inner class was an intentional design decision.
 
 Some under the hood details
 ===========================
