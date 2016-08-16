@@ -1,7 +1,7 @@
-package com.indef.staticinnerclass;
+package com.indef.staticnestedclass;
 
 /**
- * Demo of static inner classes usage 
+ * Demo of static nested class usage 
  * 
  * This class uses a static inner class to create a flavour of Builder Pattern.
  * 
