@@ -1,0 +1,234 @@
+Nested Classes
+==============
+There are 4 flavours of nested/inner classes
+
+1) Static member classes
+2) Member Classes
+3) Local Classes
+4) Anonymous Classes
+
+Static member class
+-------------------
+Static member class is called a "Nested Class", while other 3 flavours are called an "Inner Class".
+
+Static member class is a way of 'grouping' classes together. Java of-course doesn't allow you to create
+top-level static classes; only nested static classes.
+
+Static member class acts like an entirely separate class, which just happens to be accessed via the
+outer/enclosing class. You DON'T need an instance of the outer class to created an object of static 
+member class. Static member class can access static data members of enclosing class, or call static
+methods, for that matter.
+
+Member class
+------------
+Member class is a also defined as a member of a class. Unlike the static variety, the member class
+is "instance specific" (requires object of enclosing class to create its instance). Member class
+has access to any and all methods and members, even the parents(enclosing class) 'this' reference.
+
+Local class
+-----------
+Local classes are declared 'within a block' of code and are visible ONLY within that block, just
+as any other method variable. A local class can only access final variables (effectively final
+variables in java8) declared within enclosing block.
+
+Anonymous class
+---------------
+Anonymous class 'is a Local class' that has no name. 
+
+Advantage of nested/inner classes
+=================================
+Advantage of inner classes can be divided into three categories.
+
+a) An Object Oriented Advantage
+b) An Organisational Advantage
+c) A call-back Advantage
+
+The object-oriented advantage
+-----------------------------
+An important(may be most important) feature of the inner class is that it allows you to turn things into 
+objects that you normally wouldn't turn into objects. This allows code to be even more object-oriented
+than it would be without inner classes.
+
+Let's look at the member class. Since its instance is a member of its parent instance, it has access to 
+every member and method in the parent. At first glance, this might not seem like much; we already have that
+sort of access from within a method in the parent class. However, the member class allows us to take logic 
+out of the parent and objectify it. For example, a tree class may have a method and many helper methods 
+that perform a search or walk of the tree. From an object-oriented point of view, the tree is a tree, 
+not a search algorithm. However, you need intimate knowledge of the tree's data structures to accomplish 
+a search.
+
+An inner class allows us to remove that logic and place it into its own class. So from an object-oriented 
+point of view, we've taken functionality out of where it doesn't belong and have put it into its own class.
+Through the use of an inner class, we have successfully decoupled the search algorithm from the tree. 
+Now, to change the search algorithm, we can simply swap in a new class. 
+This opens up our code to many of the advantages provided by object-oriented techniques.
+
+The organizational advantage
+----------------------------
+Object-oriented design isn't everyone's thing, but luckily, inner classes provide more. 
+From an organizational point of view, inner classes allow us to further organize our package structure 
+through the use of namespaces. Instead of dumping everything in a flat package, classes can be further 
+nested within classes. Explicitly, without inner classes, we were limited to the following hierarchy 
+structure:
+
+package1
+   class 1
+      class 2
+      ...
+      class n
+...
+package n
+
+With inner classes we can do the following:
+
+package 1
+   class 1
+   class 2
+      class 1
+      class 2
+      ...
+      class n
+
+Used carefully, inner classes can provide a structural hierarchy that more naturally fits your classes.
+
+The callback advantage
+-----------------------
+Inner member classes and anonymous classes both provide a convenient method for defining callbacks. 
+The most obvious example relates to GUI code. However, the application of the callback can extend to 
+many domains.
+
+Most Java GUIs have some kind of component that instigates an actionPerformed() method call. 
+Unfortunately, most developers simply have their main window implement ActionListener. As a result, all 
+components share the same actionPerformed() method. To figure out which component performed the action, 
+there is normally a giant, ugly switch in the actionPerformed() method.
+
+Here's an example of a monolithic implementation:
+
+public class SomeGUI extends JFrame implements ActionListener
+{
+   protected JButton button1;
+   protected JButton button2;
+   ...
+   protected JButton buttonN;
+   public void actionPerformed(ActionEvent e)
+   {
+      if(e.getSource()==button1)
+      {
+         // do something
+         }
+      else if(e.getSource()==button2)
+      {
+         ... you get the picture
+         
+Whenever you see switches or large if/if else blocks, loud alarm bells should begin to ring in your mind. 
+In general, such constructs are bad object-oriented design since a change in one section of the code may 
+require a corresponding change in the switch statement. Inner member classes and anonymous classes allow 
+us to get away from the switched actionPerformed() method.
+
+Instead, we can define an inner class that implements ActionListener for each component to which we want 
+to listen. That may result in many inner classes. However, we can avoid large switch statements and have 
+the added bonus of encapsulating our action logic. Moreover, that approach may improve performance. 
+In a switch where there are n comparisons, we can expect n/2 comparisons in the average case. 
+Inner classes allow us to set up a 1:1 correspondence between the action performer and the action listener.
+In a large GUI, such optimizations can make a substantial impact on performance. An anonymous approach 
+may look like this:
+
+public class SomeGUI extends JFrame
+{
+   ... button member declarations ...
+   protected void buildGUI()
+   {
+      button1 = new JButton();
+      button2 = new JButton();
+      ...
+      button1.addActionListener(
+         new java.awt.event.ActionListener()
+         {
+            public void actionPerformed(java.awt.event.ActionEvent e)
+            {
+               // do something
+            }
+         }
+      );
+      
+      .. repeat for each button
+      
+Using inner member classes, the same program would look like this:
+
+public class SomeGUI extends JFrame
+{
+   ... button member declarations
+   // inner class definitions
+   class Button1Handler implements ActionListener
+   {
+      public void actionPerformed(ActionEvent e)
+   {
+         // do something
+      }
+   }
+   
+   ... define an inner member class for each button
+   
+   protected void buildGUI()
+   {
+      // initialize the buttons
+      button1 = new JButton();
+      button2 = new JButton();
+      ...
+      // register an inner class action listener instance
+      // for each button
+      button1.addActionListener(new Button1Handler());
+      .. repeat for each button
+      
+Since inner classes have access to everything in the parent, we can move any logic that would have 
+appeared in a monolithic actionPerformed() implementation to an inner class.
+
+I prefer to use member classes as callbacks. However, that is a matter of personal preference. 
+I just feel that too many anonymous classes clutter code. I also feel that anonymous classes can become 
+unwieldy if they are larger than one or two lines.
+
+Disadvantages?
+--------------
+As with anything else, you have to take the good with the bad. Inner classes have their disadvantages. 
+From a maintenance point of view, inexperienced Java developers may find the inner class difficult to 
+understand. The use of inner classes will also increase the total number of classes in your code. 
+
+Some under the hood details
+===========================
+When you create an instance of an anonymous inner class, any variables which are used within that class 
+have their values copied in via the auto-generated constructor. This avoids the compiler having to 
+auto-generate various extra types to hold the logical state of the "local variables", as for example 
+the C# compiler does(When C# captures a variable in an anonymous function, it really captures the variable
+- the closure can update the variable in a way which is seen by the main body of the method, 
+and vice versa.)
+
+As the value has been copied into the instance of the anonymous inner class, it would look odd if 
+the variable could be modified by the rest of the method - you could have code which appeared to 
+be working with an out-of-date variable (because that's effectively what would be happening. 
+You'd be working with a copy taken at a different time). Likewise if you could make changes within 
+the anonymous inner class, developers might expect those changes to be visible within the body of 
+the enclosing method.
+
+Making the variable final removes all these possibilities - as the value can't be changed at all, 
+you don't need to worry about whether such changes will be visible. The only ways to allow the 
+method and the anonymous inner class see each other's changes is to use a mutable type of some 
+description. This could be the enclosing class itself, an array, a mutable wrapper type. 
+Anything like that. Basically it's a bit like communicating between one method and another, 
+changes made to the parameters of one method aren't seen by its caller, but changes made to the 
+objects referred to by the parameters are seen.
+--------------------------------------------------------------------------------------------------------
+Local classes can most definitely reference instance variables. The reason they cannot reference 
+non final local variables is because the local class instance can remain in memory after the method returns.
+When the method returns the local variables go out of scope, so a copy of them is needed. 
+If the variables weren’t final then the copy of the variable in the method could change, while the copy 
+in the local class didn’t, so they’d be out of synch.
+
+Anonymous inner classes require final variables because of the way they are implemented in Java. 
+An anonymous inner class (AIC) uses local variables by creating a private instance field which holds a copy 
+of the value of the local variable. The inner class isn’t actually using the local variable, but a copy. 
+It should be fairly obvious at this point that a “Bad Thing”™ can happen if either the original value or 
+the copied value changes; there will be some unexpected data synchronisation problems. 
+In order to prevent this kind of problem, Java requires you to mark local variables that will be used by 
+the AIC as final (i.e., unchangeable). This guarantees that the inner class’ copies of local variables 
+will always match the actual values.
+----------------------------------------------------------------------------------------------------------
