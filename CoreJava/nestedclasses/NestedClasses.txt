@@ -26,15 +26,48 @@ the member class is "instance specific" (requires object of enclosing class to c
 Member class has access to any and all methods and members, even the parents(enclosing class) 'this' 
 reference.
 
+You can use the access specifiers 'private', 'public', and 'protected' to restrict access to inner classes, 
+just as you use them to restrict access do to other class members.
+
 Local class
 -----------
-Local classes are declared 'within a block' of code and are visible ONLY within that block, just
-as any other method variable. A local class can only access final variables (effectively final
-variables in java8) declared within enclosing block.
+Local classes are declared 'within a block (method body, for loop, of an if clause)' of code and are 
+visible ONLY within that block, just as any other method variable. A local class can only access final 
+variables (effectively final variables in java8. A variable or parameter whose value is never changed 
+after it is initialized is effectively final) declared within enclosing block.
+
+Local classes are non-static because they have access to instance members of the enclosing block. 
+Consequently, they cannot contain most kinds of static declarations.
+
+You cannot declare an interface inside a block; interfaces are inherently static.
+
+You cannot declare static initializers or member interfaces in a local class.
+
+A local class can have static members provided that they are constant variables. (A constant variable
+is a variable of primitive type or type String that is declared final and initialized with a 
+compile-time constant expression. A compile-time constant expression is typically a string or an 
+arithmetic expression that can be evaluated at compile time.
 
 Anonymous class
 ---------------
-Anonymous class 'is a Local class' that has no name. 
+Anonymous classes enable you to make your code more concise. They enable you to declare and instantiate
+a class at the same time. They are like local classes except that they do not have a name. 
+Use them if you need to use a local class only once. 
+
+While local classes are class declarations, anonymous classes are expressions, which means that you 
+define the class in another expression.
+
+Like local classes, anonymous classes can capture variables; they have the same access to local 
+variables of the enclosing scope.
+
+Anonymous classes also have the same restrictions as local classes with respect to their members.
+
+You can declare the following in anonymous classes:
+	- Fields
+	- Extra methods (even if they do not implement any methods of the supertype)
+	- Instance initializers
+	- Local classes
+However, you cannot declare constructors in an anonymous class.
 
 Advantage of nested/inner classes
 =================================
@@ -238,3 +271,7 @@ In order to prevent this kind of problem, Java requires you to mark local variab
 the AIC as final (i.e., unchangeable). This guarantees that the inner class’ copies of local variables 
 will always match the actual values.
 ----------------------------------------------------------------------------------------------------------
+
+References
+==========
+https://docs.oracle.com/javase/tutorial/java/javaOO/innerclasses.html
